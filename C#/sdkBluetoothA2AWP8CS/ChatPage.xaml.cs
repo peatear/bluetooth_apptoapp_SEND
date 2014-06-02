@@ -42,12 +42,30 @@ namespace sdkBluetoothA2AWP8CS
         {
             InitializeComponent();
 
-            SystemTray.SetProgressIndicator(this, new ProgressIndicator());
+            //SystemTray.SetProgressIndicator(this, new ProgressIndicator());
 
-            this.DataContext = App.ChatName;
+            this.DataContext = "Sender";
+            init();
         }
 
+        void init()
+        {
+            // Maintain a list of peers and bind that list to the UI
+            _peerApps = new ObservableCollection<PeerAppInfo>();
+            PeerList.ItemsSource = _peerApps;
 
+            // Register for incoming connection requests
+            PeerFinder.ConnectionRequested += PeerFinder_ConnectionRequested;
+
+            // Start advertising ourselves so that our peers can find us
+            PeerFinder.DisplayName = "Sender";
+            PeerFinder.Start();
+
+            RefreshPeerAppList();
+
+            //base.OnNavigatedTo(e);
+
+        }
         protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
         {
             // Maintain a list of peers and bind that list to the UI
@@ -58,23 +76,12 @@ namespace sdkBluetoothA2AWP8CS
             PeerFinder.ConnectionRequested += PeerFinder_ConnectionRequested;
 
             // Start advertising ourselves so that our peers can find us
-            PeerFinder.DisplayName = App.ChatName;
+            PeerFinder.DisplayName = "Sender";
             PeerFinder.Start();
 
             RefreshPeerAppList();
 
             base.OnNavigatedTo(e);
-        }
-
-        protected override void OnNavigatingFrom(System.Windows.Navigation.NavigatingCancelEventArgs e)
-        {
-            
-            PeerFinder.ConnectionRequested -= PeerFinder_ConnectionRequested;
-
-            // Cleanup before we leave
-
-            
-            base.OnNavigatingFrom(e);
         }
 
         void PeerFinder_ConnectionRequested(object sender, ConnectionRequestedEventArgs args)
@@ -142,7 +149,7 @@ namespace sdkBluetoothA2AWP8CS
         {
             try
             {
-                StartProgress("finding peers ...");
+                //StartProgress("finding peers ...");
                 var peers = await PeerFinder.FindAllPeersAsync();
 
                 // By clearing the backing data, we are effectively clearing the ListBox
@@ -192,7 +199,7 @@ namespace sdkBluetoothA2AWP8CS
             }
             finally
             {
-                StopProgress();
+              
             }
         }
 
@@ -242,23 +249,6 @@ namespace sdkBluetoothA2AWP8CS
 
             _dataWriter.WriteString(message);
             await _dataWriter.StoreAsync();
-        }
-
-
-        private void StartProgress(string message)
-        {
-            SystemTray.ProgressIndicator.Text = message;
-            SystemTray.ProgressIndicator.IsIndeterminate = true;
-            SystemTray.ProgressIndicator.IsVisible = true;
-        }
-
-        private void StopProgress()
-        {
-            if (SystemTray.ProgressIndicator != null)
-            {
-            SystemTray.ProgressIndicator.IsVisible = false;
-            SystemTray.ProgressIndicator.IsIndeterminate = false;
-                }
         }
 
         private void ShowBluetoothControlPanel()
