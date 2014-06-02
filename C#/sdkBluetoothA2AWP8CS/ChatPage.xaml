@@ -59,14 +59,15 @@
                 </ListBox.ItemTemplate>
             </ListBox>
             <Button Grid.Row="3" Content="{Binding Path=LocalizedResources.ConnectButtonCaption, Source={StaticResource LocalizedStrings}}" x:Name="ConnectToSelected" Tap="ConnectToSelected_Tap_1" Margin="10,0,0,0"/>
-            <ScrollViewer x:Name="svChatBox"  Grid.Row="4" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Height="300">
+            <ScrollViewer x:Name="svChatBox"  Grid.Row="4" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Margin="0,92,0,0">
                 <TextBlock  x:Name="tbChat" FontSize="{StaticResource PhoneFontSizeSmall}" TextWrapping="Wrap" Width="440" />
             </ScrollViewer>
             <StackPanel Grid.Row="5" Orientation="Horizontal">
                 <TextBox x:Name="txtMessage" Width="350"/>
                 <Button x:Name="btnSendMessage" Content="{Binding Path=LocalizedResources.SendButtonCaption, Source={StaticResource LocalizedStrings}}" Tap="SendMessage_Tap_1"/>
             </StackPanel>
-            
+            <Slider x:Name="throttleSlider" HorizontalAlignment="Left" Margin="25,143,0,0" Grid.Row="6" VerticalAlignment="Top" Width="387" Height="84" ValueChanged="throttleSlider_ValueChanged"/>
+
         </Grid>
 
     </Grid>

@@ -287,6 +287,11 @@ namespace sdkBluetoothA2AWP8CS
             connectionSettingsTask.ConnectionSettingsType = ConnectionSettingsType.Bluetooth;
             connectionSettingsTask.Show();
         }
+
+        private void throttleSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            SendMessage(e.NewValue.ToString("0.00"));
+        }
     }
 
     /// <summary>
