@@ -113,7 +113,6 @@ namespace sdkBluetoothA2AWP8CS
                 PeerFinder.Stop();
 
                 _peerName = peer.DisplayName;
-                UpdateChatBox(AppResources.Msg_ChatStarted, true);
 
                 // Since this is a chat, messages can be incoming and outgoing. 
                 // Listen for incoming messages.
@@ -243,27 +242,8 @@ namespace sdkBluetoothA2AWP8CS
 
             _dataWriter.WriteString(message);
             await _dataWriter.StoreAsync();
-
-            UpdateChatBox(message, false);
         }
 
-        private void UpdateChatBox(string message, bool isIncoming)
-        {
-            if (isIncoming)
-            {
-                message = (String.IsNullOrEmpty(_peerName)) ? String.Format(AppResources.Format_IncomingMessageNoName, message) : String.Format(AppResources.Format_IncomingMessageWithName, _peerName, message);
-            }
-            else
-            {
-                message = String.Format(AppResources.Format_OutgoingMessage,message);
-            }
-
-            this.Dispatcher.BeginInvoke(() =>
-                {
-                    tbChat.Text = message + tbChat.Text;
-                    txtMessage.Text = (isIncoming) ? txtMessage.Text : string.Empty;
-                });
-        }
 
         private void StartProgress(string message)
         {
